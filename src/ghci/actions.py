@@ -9,16 +9,16 @@ for a job runner that watches a run or job from a task description: keep its sig
     ghci                          wait for CI on the current repo's branch tip; exit 0 on success
     ghci status                   current state only, no waiting (exit 3 = still running)
     ghci --head                   CI for local HEAD (waits for the runs to appear after a push)
-    ghci -r octo/app -b gliner -j "Build and push"
+    ghci -r octo/app -b release -j "Build and push"
     ghci --run 123456789 --steps --log-file ~/ci.log
     ghci -r octo/app -c 1a2b3c4 -j build_images   returns once that job is done
 
 What is checked: every workflow's latest run for one commit (--run: that run only; else --commit/--head:
 that commit; else the branch's newest run's commit). The last line is one summary line:
-    CI octo/app@gliner 1a2b3c4: success (2/2 runs ok)
+    CI octo/app@release 1a2b3c4: success (2/2 runs ok)
 and on failure the failed jobs/steps plus the end of `gh run view --log-failed` come before it. With
 --job, only that job counts (watch stops when it finishes, even if its run goes on):
-    CI octo/app@gliner 1a2b3c4: job build success (run still in_progress)
+    CI octo/app@release 1a2b3c4: job build success (run still in_progress)
 
 A branch with an open PR from a fork: in a fork clone (an `upstream` remote; or origin is a fork and has no runs
 of its own) ghci follows the PR's CI on the base repo, for the PR's head commit. When the Actions API answers 404 for the runs (a token
@@ -51,7 +51,7 @@ OK_CONCLUSIONS = ("success", "skipped", "neutral")
 
 
 def get_github_token() -> str | None:
-    """GH_TOKEN / GITHUB_TOKEN from the environment (the runner sets both to its org PAT), else None."""
+    """GH_TOKEN / GITHUB_TOKEN from the environment, else None."""
     for key in ("GH_TOKEN", "GITHUB_TOKEN"):
         token = (os.environ.get(key) or "").strip()
         if token:

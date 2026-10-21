@@ -7,6 +7,7 @@ name = "ghci"
 dynamic = ["version"]
 description = "GitHub Actions CI status and watch for any repo (ghci), and cleanup of your PRs, forks and clones (ghclean)."
 readme = "README.md"
+license = { text = "MIT" }
 requires-python = ">=3.9"
 dependencies = []
 
